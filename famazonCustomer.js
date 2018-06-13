@@ -22,7 +22,6 @@ connection.connect(function (err) {
   console.log("You are connected to the Famazon Store");
   // run the start function after the connection is made to prompt the user
   famazonPage();
-  //  connection.end();
 });
 
 function famazonPage() {
@@ -43,7 +42,7 @@ function famazonPage() {
 
             }
             return choiceArray;
-            // console.log(choiceArray);
+
           },
 
         },
@@ -77,7 +76,7 @@ function famazonPage() {
           //runs the math to get updated quantity
           var mathProb = chosenItem.stock_quantity - parseInt(answer.units);
           var receipt = parseInt(answer.units) * chosenItem.price;
-          
+
           //updates quanitity
           connection.query(
             "UPDATE products SET ? WHERE ?", [{
