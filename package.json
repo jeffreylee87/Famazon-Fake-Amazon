@@ -1,0 +1,23 @@
+{
+  "name": "famazon-fake-amazon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "famazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffreylee87/Famazon-fake-amazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeffreylee87/Famazon-fake-amazon/issues"
+  },
+  "homepage": "https://github.com/jeffreylee87/Famazon-fake-amazon#readme",
+  "dependencies": {
+    "inquirer": "^6.0.0",
+    "mysql": "^2.15.0"
+  }
+}
