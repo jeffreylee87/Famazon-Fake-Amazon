@@ -24,24 +24,32 @@ connection.connect(function (err) {
     ask();
 });
 
-function ask() {
+function ask(){
     inquirer.prompt([{
         type: "list",
         name: "command",
         message: "Manager Terminal Options: ",
-        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product", "Exit Manager Terminal"]
     }, ]).then(function (user) {
-        if (user.command === "View Products for Sale") {
+        switch(user.command){
+            case "View Products for Sale":
             viewProd();
-        } else if (user.command === "View Low Inventory") {
+            break;
+            case "View Low Inventory":
             lowInventory();
-        } else if (user.command === "Add to Inventory") {
+            break;
+            case "Add to Inventory":
             addInventory();
-        } else {
+            break;
+            case "Add New Product":
             addNewItem();
+            break;
+            case "Exit Manager Terminal":
+            connection.end();
+            break;
         }
     });
-};
+}
 
 function viewProd() {
     connection.query("SELECT * FROM products", function (err, results) {
@@ -53,7 +61,7 @@ function viewProd() {
         }
         console.log("\n🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥\n");
         //ends connection, can change it to go to home screen
-        connection.end();
+        ask();
     });
 }
 
@@ -131,7 +139,7 @@ function addInventory() {
                         console.log("\n" + chosenItem.image);
                         console.log("\n🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆🔆\n");
                         //ends connection, can change it to go back to the home screen
-                        connection.end();
+                        ask();
                     }
                 );
             });
@@ -177,7 +185,6 @@ function addNewItem() {
             message: "Please feel free to add any one line ascii art representing the item",
         }
     ]).then(function (answer) {
-        console.log(answer);
         connection.query(
             "INSERT INTO products (product_name, department_name, price, stock_quantity, image) VALUES (?, ?, ?, ?, ?)", [
                 answer.name, answer.department, answer.price, answer.units, answer.image

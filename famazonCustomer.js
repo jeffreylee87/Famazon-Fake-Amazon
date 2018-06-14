@@ -76,13 +76,15 @@ function famazonPage() {
           //runs the math to get updated quantity
           var mathProb = chosenItem.stock_quantity - parseInt(answer.units);
           var receipt = parseInt(answer.units) * chosenItem.price;
-
+          var netValue = chosenItem.product_sales + receipt;
           //updates quanitity
           connection.query(
             "UPDATE products SET ? WHERE ?", [{
-                stock_quantity: mathProb
+                stock_quantity: mathProb,
+                product_sales: netValue
               },
               {
+                item_id: chosenItem.item_id,
                 item_id: chosenItem.item_id
               }
             ],
@@ -91,15 +93,32 @@ function famazonPage() {
               console.log("\n[̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅]\n");
               console.log("Purchased Successfully!");
               console.log("Your are now the proud owner of a " + chosenItem.product_name + "\n\n" + chosenItem.image + "\n\n");
-              console.log("Total: $" + receipt);
+              console.log("Total: $" + receipt.toFixed(2));
               console.log("\n[̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅][̲̅$̲̅(̲̅ιοο̲̅)̲̅$̲̅]\n");
-              connection.end();
+              // connection.end();
+              inquirer.prompt([{
+                type: "list",
+                name: "command",
+                message: "Purchase more? ",
+                choices: ["Yes", "No"]
+            }, ]).then(function (user) {
+                if (user.command === "Yes") {
+                    famazonPage();
+                } else {
+                  console.log("\n👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋");
+                  console.log("\nGoodbye!!!\n");
+                  console.log("👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋\n");
+                connection.end();
+                }
+              });
 
             }
           );
         } else {
-          // bid wasn't high enough, so apologize and start over
+          //if quantity chosen is too low
+          console.log("\n🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫\n");
           console.log("Not enough quantities try again");
+          console.log("\n🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫\n");
           famazonPage();
         }
       });
